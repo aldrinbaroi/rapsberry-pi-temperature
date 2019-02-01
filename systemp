@@ -1,0 +1,20 @@
+#!/bin/bash
+# Script: systemp
+# Purpose: Display the ARM CPU and GPU  temperature of Raspberry Pi 2/3 
+# Author: Vivek Gite <www.cyberciti.biz> under GPL v2.x+
+# Modified: Aldrin Edison Baroi 2018/08/25
+# -------------------------------------------------------
+DS="\xc2\xb0C"
+TZ='America/Los_Angeles'
+cpu_t=$(cat /sys/class/thermal/thermal_zone0/temp)
+cpu_c=$((cpu_t/1000))
+gpu_s=$(/opt/vc/bin/vcgencmd measure_temp)
+gpu_c=${gpu_s//[^0-9\.]/}
+printf "\n\n"
+echo "System: $(hostname)"
+echo "Date  : $(TZ=$TZ date +"%a %b %d, %Y %I:%M %P")"
+echo "---------------------------------"
+printf "GPU => %#4.1f$DS\n" ${gpu_c}
+printf "CPU => %#4.1f$DS\n" ${cpu_c}
+printf "\n\n"
+#::END::
